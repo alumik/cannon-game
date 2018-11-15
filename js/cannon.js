@@ -30,6 +30,7 @@ class Cannon {
         strokeCap(SQUARE)
         point(this.pos.x, this.pos.y)
         line(this.pos.x, this.pos.y, this.muzzle.x, this.muzzle.y)
+        strokeCap(ROUND)
     }
 
     __showText() {

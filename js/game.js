@@ -89,5 +89,6 @@ class Game {
             this.config.speed_bar.x,
             height / 2 + this.config.speed_bar.half_len - bar_len
         )
+        strokeCap(ROUND)
     }
 }
