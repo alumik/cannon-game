@@ -7,16 +7,20 @@ class Bullet {
         this.last_trajectory = []
     }
 
-    static __showTrajectoryByType(trajectory, color, weight) {
-        if (trajectory.length > 1) {
-            stroke(color)
-            strokeWeight(weight)
-            for (let i = 0; i < trajectory.length - 1; i++) {
-                line(
-                    trajectory[i].x, trajectory[i].y,
-                    trajectory[i + 1].x, trajectory[i + 1].y
-                )
+    __showTrajectoryByType(trajectory, color, weight) {
+        stroke(color)
+        strokeWeight(weight)
+        for (let i = 0; i < trajectory.length - 1; i += this.config.trajectory.step) {
+            let i_next
+            if (i + this.config.trajectory.step <= trajectory.length - 1) {
+                i_next = i + this.config.trajectory.step
+            } else {
+                i_next = trajectory.length - 1
             }
+            line(
+                trajectory[i].x, trajectory[i].y,
+                trajectory[i_next].x, trajectory[i_next].y
+            )
         }
     }
 
@@ -58,7 +62,7 @@ class Bullet {
         } else {
             stroke_color = this.config.last_trajectory.color_miss
         }
-        Bullet.__showTrajectoryByType(
+        this.__showTrajectoryByType(
             this.last_trajectory,
             stroke_color,
             this.config.last_trajectory.weight
@@ -72,7 +76,7 @@ class Bullet {
     }
 
     showTrajectory() {
-        Bullet.__showTrajectoryByType(
+        this.__showTrajectoryByType(
             this.trajectory,
             this.config.trajectory.color,
             this.config.trajectory.weight

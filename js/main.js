@@ -20,7 +20,7 @@ function setup() {
             buffer: 50,
             color: 255,
             weight: 1,
-            step: 5
+            step: 15
         },
         target: {
             margin_left: 200,
@@ -94,6 +94,7 @@ function setup() {
             weight: 1
         },
         trajectory: {
+            step: 15,
             color: color(255, 255, 0),
             weight: 3
         }
