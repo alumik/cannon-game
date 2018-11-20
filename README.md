@@ -8,4 +8,4 @@
 
 ## 演示网站
 
-炮击游戏
+[炮击游戏](https://alumik.github.io/cannon-game-p5js/)
