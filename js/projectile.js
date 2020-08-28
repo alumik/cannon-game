@@ -1,4 +1,4 @@
-class Bullet {
+class Projectile {
     constructor(config) {
         this.config = config
         this.pos = undefined
@@ -7,7 +7,7 @@ class Bullet {
         this.last_trajectory = []
     }
 
-    __showTrajectoryByType(trajectory, color, weight) {
+    _showTrajectoryByType(trajectory, color, weight) {
         stroke(color)
         strokeWeight(weight)
         for (let i = 0; i < trajectory.length - 1; i += this.config.trajectory.step) {
@@ -43,15 +43,15 @@ class Bullet {
             } else {
                 game.hit = false
             }
-            game.bullet_out = false
+            game.projectile_out = false
             this.last_trajectory = this.trajectory
             this.trajectory = []
         }
     }
 
     show() {
-        stroke(this.config.bullet.color)
-        strokeWeight(this.config.bullet.weight)
+        stroke(this.config.projectile.color)
+        strokeWeight(this.config.projectile.weight)
         point(this.pos.x, this.pos.y)
     }
 
@@ -62,7 +62,7 @@ class Bullet {
         } else {
             stroke_color = this.config.last_trajectory.color_miss
         }
-        this.__showTrajectoryByType(
+        this._showTrajectoryByType(
             this.last_trajectory,
             stroke_color,
             this.config.last_trajectory.weight
@@ -76,7 +76,7 @@ class Bullet {
     }
 
     showTrajectory() {
-        this.__showTrajectoryByType(
+        this._showTrajectoryByType(
             this.trajectory,
             this.config.trajectory.color,
             this.config.trajectory.weight

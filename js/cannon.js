@@ -16,7 +16,7 @@ class Cannon {
         this.power = config.power.min
     }
 
-    __showAimLine() {
+    _showAimLine() {
         stroke(this.config.aim_line.color)
         strokeWeight(this.config.aim_line.weight)
         line(this.pos.x, this.pos.y, mouseX, mouseY)
@@ -24,7 +24,7 @@ class Cannon {
         point(mouseX, mouseY)
     }
 
-    __showBody() {
+    _showBody() {
         stroke(this.config.cannon.color)
         strokeWeight(this.config.cannon.weight)
         strokeCap(SQUARE)
@@ -33,7 +33,7 @@ class Cannon {
         strokeCap(ROUND)
     }
 
-    __showText() {
+    _showText() {
         textSize(this.config.text.size)
         textAlign(CENTER, CENTER)
         stroke(this.config.text.outline.color)
@@ -71,22 +71,22 @@ class Cannon {
             this.muzzle = muzzle
         }
         this.cannon_vec = p5.Vector.sub(this.muzzle, this.pos)
-        this.__showAimLine()
-        this.__showBody()
-        this.__showText()
+        this._showAimLine()
+        this._showBody()
+        this._showText()
     }
 
     showAim() {
-        let bullet_pos = this.muzzle.copy()
-        let bullet_velocity = this.cannon_vec.copy()
-        bullet_velocity.setMag(this.power)
+        let projectile_pos = this.muzzle.copy()
+        let projectile_velocity = this.cannon_vec.copy()
+        projectile_velocity.setMag(this.power)
         while (true) {
-            bullet_velocity.add(game.config.gravity)
-            let speed = bullet_velocity.mag()
-            let friction_acc = bullet_velocity.copy().setMag(bullet.config.friction * sq(speed))
-            bullet_velocity.sub(friction_acc)
-            bullet_pos.add(bullet_velocity)
-            if (bullet_pos.y >= game.ground(bullet_pos.x) || bullet_pos.x > game.ground_max || bullet_pos.x < game.ground_min) {
+            projectile_velocity.add(game.config.gravity)
+            let speed = projectile_velocity.mag()
+            let friction_acc = projectile_velocity.copy().setMag(projectile.config.friction * sq(speed))
+            projectile_velocity.sub(friction_acc)
+            projectile_pos.add(projectile_velocity)
+            if (projectile_pos.y >= game.ground(projectile_pos.x) || projectile_pos.x > game.ground_max || projectile_pos.x < game.ground_min) {
                 break
             }
         }
@@ -94,21 +94,21 @@ class Cannon {
         strokeWeight(this.config.aim.weight)
         noFill()
         ellipse(
-            bullet_pos.x,
-            bullet_pos.y,
+            projectile_pos.x,
+            projectile_pos.y,
             this.config.aim.radius,
             this.config.aim.radius
         )
         line(
-            bullet_pos.x,
-            bullet_pos.y - this.config.aim.len,
-            bullet_pos.x,
-            bullet_pos.y + this.config.aim.len)
+            projectile_pos.x,
+            projectile_pos.y - this.config.aim.len,
+            projectile_pos.x,
+            projectile_pos.y + this.config.aim.len)
         line(
-            bullet_pos.x - this.config.aim.len,
-            bullet_pos.y,
-            bullet_pos.x + this.config.aim.len,
-            bullet_pos.y
+            projectile_pos.x - this.config.aim.len,
+            projectile_pos.y,
+            projectile_pos.x + this.config.aim.len,
+            projectile_pos.y
         )
     }
 }

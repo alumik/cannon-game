@@ -9,7 +9,7 @@ class Game {
         this.hit = false
         this.hit_count = 0
         this.shoot_count = 0
-        this.bullet_out = false
+        this.projectile_out = false
     }
 
     makeTarget() {
@@ -20,7 +20,7 @@ class Game {
         this.target.right = this.target.left + this.config.target.len
     }
 
-    __showAlongGround(start, end, color, weight) {
+    _showAlongGround(start, end, color, weight) {
         stroke(color)
         strokeWeight(weight)
         for (let x = start; x < end - this.config.ground.step; x += this.config.ground.step) {
@@ -32,7 +32,7 @@ class Game {
     }
 
     showGround() {
-        this.__showAlongGround(
+        this._showAlongGround(
             0,
             this.ground_max,
             this.config.ground.color,
@@ -41,7 +41,7 @@ class Game {
     }
 
     showTarget() {
-        this.__showAlongGround(
+        this._showAlongGround(
             this.target.left,
             this.target.right,
             this.config.target.color,
@@ -59,7 +59,7 @@ class Game {
             accuracy = nfc(this.hit_count / this.shoot_count * 100, 2) + '%'
         }
         text(
-            '发射：' + this.shoot_count + '   命中：' + this.hit_count + '   命中率：' + accuracy,
+            'Shot: ' + this.shoot_count + '    Hit: ' + this.hit_count + '   Accuracy: ' + accuracy,
             this.config.text.offset.x,
             this.config.text.offset.y
         )

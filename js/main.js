@@ -1,13 +1,13 @@
 let game
 let cannon
-let bullet
+let projectile
 
 function setup() {
     createCanvas(1000, 600)
     angleMode(DEGREES)
     game = new Game({
         background: 0,
-        iterations_per_frame: 10,
+        iters_per_frame: 10,
         gravity: createVector(0, 0.004),
         ground: {
             fn: x => {
@@ -82,9 +82,9 @@ function setup() {
             max: 6
         }
     })
-    bullet = new Bullet({
+    projectile = new Projectile({
         friction: 0.0025,
-        bullet: {
+        projectile: {
             color: 255,
             weight: 10
         },
@@ -108,17 +108,17 @@ function draw() {
     game.showTarget()
     cannon.setPower()
     cannon.show()
-    bullet.showLastTrajectory()
+    projectile.showLastTrajectory()
     if (game.show_prediction) {
         cannon.showAim()
     }
-    if (game.bullet_out) {
-        bullet.showTrajectory()
-        bullet.show()
-        for (let i = 0; i < game.config.iterations_per_frame; i++) {
-            if (game.bullet_out) {
-                bullet.move()
-                bullet.judge()
+    if (game.projectile_out) {
+        projectile.showTrajectory()
+        projectile.show()
+        for (let i = 0; i < game.config.iters_per_frame; i++) {
+            if (game.projectile_out) {
+                projectile.move()
+                projectile.judge()
             } else {
                 break
             }
@@ -129,12 +129,12 @@ function draw() {
 }
 
 function mouseClicked() {
-    if (!game.bullet_out) {
-        game.bullet_out = true
-        bullet.pos = cannon.muzzle.copy()
-        bullet.trajectory.push(bullet.pos.copy())
-        bullet.velocity = cannon.cannon_vec.copy()
-        bullet.velocity.setMag(cannon.power)
+    if (!game.projectile_out) {
+        game.projectile_out = true
+        projectile.pos = cannon.muzzle.copy()
+        projectile.trajectory.push(projectile.pos.copy())
+        projectile.velocity = cannon.cannon_vec.copy()
+        projectile.velocity.setMag(cannon.power)
     }
 }
 
