@@ -6,4 +6,4 @@
 
 ## 演示网站
 
-https://alumik.github.io/cannon-game/
+https://pages.alumik.cn/cannon-game/
