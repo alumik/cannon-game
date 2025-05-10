@@ -5,19 +5,19 @@ class Game {
         this.ground_min = -config.ground.buffer
         this.ground_max = width + config.ground.buffer
         this.target = {}
-        this.show_prediction = false
+        this.show_crosshair = false
         this.hit = false
         this.hit_count = 0
         this.shoot_count = 0
         this.projectile_out = false
     }
 
-    makeTarget() {
+    spawnTarget() {
         this.target.left = random(
-            this.config.target.margin_left,
-            width - this.config.target.margin_right
+            this.config.target.left_margin,
+            width - this.config.target.right_margin,
         )
-        this.target.right = this.target.left + this.config.target.len
+        this.target.right = this.target.left + this.config.target.length
     }
 
     _showAlongGround(start, end, color, weight) {
@@ -25,18 +25,20 @@ class Game {
         strokeWeight(weight)
         for (let x = start; x < end - this.config.ground.step; x += this.config.ground.step) {
             line(
-                x, this.ground(x),
-                x + this.config.ground.step, this.ground(x + this.config.ground.step)
+                x,
+                this.ground(x),
+                x + this.config.ground.step,
+                this.ground(x + this.config.ground.step),
             )
         }
     }
 
     showGround() {
         this._showAlongGround(
-            0,
+            this.ground_min,
             this.ground_max,
             this.config.ground.color,
-            this.config.ground.weight
+            this.config.ground.weight,
         )
     }
 
@@ -60,34 +62,34 @@ class Game {
         }
         text(
             'Shot: ' + this.shoot_count + '    Hit: ' + this.hit_count + '   Accuracy: ' + accuracy,
-            this.config.text.offset.x,
-            this.config.text.offset.y
+            this.config.text.position.x,
+            this.config.text.position.y,
         )
     }
 
-    showSpeedBar() {
+    showPowerMeter() {
         strokeCap(SQUARE)
-        strokeWeight(this.config.speed_bar.weight)
-        stroke(this.config.speed_bar.background)
+        strokeWeight(this.config.power_meter.weight)
+        stroke(this.config.power_meter.background)
         line(
-            this.config.speed_bar.x,
-            height / 2 + this.config.speed_bar.half_len,
-            this.config.speed_bar.x,
-            height / 2 - this.config.speed_bar.half_len
+            this.config.power_meter.position.x,
+            height / 2 + this.config.power_meter.length / 2,
+            this.config.power_meter.position.x,
+            height / 2 - this.config.power_meter.length / 2,
         )
-        stroke(this.config.speed_bar.color)
-        let bar_len = map(
+        stroke(this.config.power_meter.color)
+        let filled_length = map(
             cannon.power,
             cannon.config.power.min,
             cannon.config.power.max,
             0,
-            2 * this.config.speed_bar.half_len
+            this.config.power_meter.length,
         )
         line(
-            this.config.speed_bar.x,
-            height / 2 + this.config.speed_bar.half_len,
-            this.config.speed_bar.x,
-            height / 2 + this.config.speed_bar.half_len - bar_len
+            this.config.power_meter.position.x,
+            height / 2 + this.config.power_meter.length / 2,
+            this.config.power_meter.position.x,
+            height / 2 + this.config.power_meter.length / 2 - filled_length,
         )
         strokeCap(ROUND)
     }

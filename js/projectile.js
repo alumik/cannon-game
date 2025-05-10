@@ -1,18 +1,18 @@
 class Projectile {
     constructor(config) {
         this.config = config
-        this.pos = undefined
+        this.position = undefined
         this.velocity = undefined
         this.trajectory = []
         this.last_trajectory = []
     }
 
-    _showTrajectoryByType(trajectory, color, weight) {
+    _showTrajectory(trajectory, color, weight) {
         stroke(color)
         strokeWeight(weight)
         for (let i = 0; i < trajectory.length - 1; i += this.config.trajectory.step) {
             let i_next
-            if (i + this.config.trajectory.step <= trajectory.length - 1) {
+            if (i + this.config.trajectory.step < trajectory.length) {
                 i_next = i + this.config.trajectory.step
             } else {
                 i_next = trajectory.length - 1
@@ -29,17 +29,17 @@ class Projectile {
         let speed = this.velocity.mag()
         let friction_acc = this.velocity.copy().setMag(this.config.friction * sq(speed))
         this.velocity.sub(friction_acc)
-        this.pos.add(this.velocity)
-        this.trajectory.push(this.pos.copy())
+        this.position.add(this.velocity)
+        this.trajectory.push(this.position.copy())
     }
 
-    judge() {
-        if (this.pos.y >= game.ground(this.pos.x) || this.pos.x > game.ground_max || this.pos.x < game.ground_min) {
+    checkHit() {
+        if (this.position.y >= game.ground(this.position.x) || this.position.x > game.ground_max || this.position.x < game.ground_min) {
             game.shoot_count++
-            if (this.pos.x > game.target.left && this.pos.x < game.target.right) {
+            if (this.position.x > game.target.left && this.position.x < game.target.right) {
                 game.hit_count++
                 game.hit = true
-                game.makeTarget()
+                game.spawnTarget()
             } else {
                 game.hit = false
             }
@@ -52,7 +52,7 @@ class Projectile {
     show() {
         stroke(this.config.projectile.color)
         strokeWeight(this.config.projectile.weight)
-        point(this.pos.x, this.pos.y)
+        point(this.position.x, this.position.y)
     }
 
     showLastTrajectory() {
@@ -62,10 +62,10 @@ class Projectile {
         } else {
             stroke_color = this.config.last_trajectory.color_miss
         }
-        this._showTrajectoryByType(
+        this._showTrajectory(
             this.last_trajectory,
             stroke_color,
-            this.config.last_trajectory.weight
+            this.config.last_trajectory.weight,
         )
         if (this.last_trajectory.length > 0) {
             stroke(stroke_color)
@@ -76,7 +76,7 @@ class Projectile {
     }
 
     showTrajectory() {
-        this._showTrajectoryByType(
+        this._showTrajectory(
             this.trajectory,
             this.config.trajectory.color,
             this.config.trajectory.weight
